@@ -10,7 +10,7 @@ import {
 @Injectable({ providedIn: "root" })
 export class ApiService {
   private http = inject(HttpClient);
-  private base = "http://localhost:8080/api";
+  private base = "https://roasting-monitor.onrender.com/api";
   login(username: string, password: string) {
     return this.http.post<UserSession>(`${this.base}/auth/login`, {
       username,
