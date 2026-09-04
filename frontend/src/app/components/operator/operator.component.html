@@ -1,0 +1,131 @@
+<section class="content">
+  <div class="card">
+    <div class="card-title">New Roasting Batch</div>
+    <div class="card-subtitle">
+      Fill in what went in and what came out — everything else is worked out for
+      you.
+    </div>
+    <div class="field">
+      <label>Raw Material</label
+      ><select [(ngModel)]="material">
+        <option value="">Choose a raw material…</option>
+        <option *ngFor="let m of materials" [value]="m.name">
+          {{ m.name }} — {{ m.quantity | number: "1.0-2" }} kg available
+        </option>
+      </select>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>Quantity In (kg)</label
+        ><input type="number" [(ngModel)]="inputQty" />
+      </div>
+      <div class="field">
+        <label>Quantity Out (kg)</label
+        ><input type="number" [(ngModel)]="outputQty" />
+      </div>
+    </div>
+    <div class="stat-grid" *ngIf="calc as c">
+      <div class="stat-card">
+        <div class="stat-label">Input</div>
+        <div class="stat-value">
+          {{ inputQty | number: "1.0-2" }} kg | 100.0%
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Expected Output</div>
+        <div class="stat-value">
+          {{ c.expected | number: "1.0-2" }} kg |
+          {{ 100 - (m?.standardLossPct || 0) | number: "1.0-1" }}%
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Actual Output</div>
+        <div class="stat-value">
+          {{ outputQty | number: "1.0-2" }} kg |
+          {{ c.yieldPct | number: "1.0-1" }}%
+        </div>
+      </div>
+      <div class="stat-card loss">
+        <div class="stat-label">Loss</div>
+        <div class="stat-value">
+          {{ c.loss | number: "1.0-2" }} kg | {{ c.lossPct | number: "1.0-1" }}%
+        </div>
+      </div>
+      <div class="stat-card standard">
+        <div class="stat-label">Standard Loss</div>
+        <div class="stat-value">
+          {{ c.stdKg | number: "1.0-2" }} kg |
+          {{ m?.standardLossPct | number: "1.0-1" }}%
+        </div>
+      </div>
+      <div
+        class="stat-card"
+        [class.good]="c.variancePct < 0"
+        [class.bad]="c.variancePct > 0"
+      >
+        <div class="stat-label">Loss Variance</div>
+        <div class="stat-value">
+          {{ c.variancePct > 0 ? "▲" : "▼" }}
+          {{ c.variance | number: "1.0-2" }} kg |
+          {{ c.variancePct | number: "1.0-1" }}%
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Remarks <span class="optional-tag">(optional)</span></label
+      ><textarea rows="2" [(ngModel)]="remarks"></textarea>
+    </div>
+    <div class="error-text" *ngIf="error">{{ error }}</div>
+    <button class="btn" (click)="save()">Save Roasting Batch</button>
+  </div>
+  <div class="card">
+    <div class="history-title">Roasting History</div>
+    <div class="history-subtitle">
+      Your last 10 batches — tap one to see the full breakdown.
+    </div>
+    <div class="batch-list">
+      <div class="batch-row-wrap" *ngFor="let b of batches">
+        <button class="batch-row" (click)="toggle(b.id)">
+          <span
+            ><b>{{ b.batchNo }}</b> · {{ b.material }}</span
+          ><span
+            >{{ b.variancePct | number: "1.0-1" }}% variance ·
+            {{ b.createdAt | date: "MMM d, h:mm a" }} ▼</span
+          >
+        </button>
+        <div class="batch-detail" *ngIf="expanded.has(b.id)">
+          <div class="batch-detail-grid">
+            <div>
+              <small>Quantity In</small>
+              <b>{{ b.inputQty }} kg | 100.0%</b>
+            </div>
+
+            <div>
+              <small>Expected Output</small>
+              <b>
+                {{ b.expectedOutputKg }} kg |
+                {{ 100 - b.stdLossPct | number: "1.0-1" }}%
+              </b>
+            </div>
+            <div>
+              <small>Actual Output</small
+              ><b>{{ b.outputQty }} kg | {{ b.yieldPct }}%</b>
+            </div>
+            <div>
+              <small>Loss</small><b>{{ b.loss }} kg | {{ b.lossPct }}%</b>
+            </div>
+            <div>
+              <small>Standard Loss</small
+              ><b>{{ b.stdLossKg }} kg | {{ b.stdLossPct }}%</b>
+            </div>
+            <div>
+              <small>Loss Variance</small
+              ><b>{{ b.varianceKg }} kg | {{ b.variancePct }}%</b>
+            </div>
+          </div>
+          <p *ngIf="b.remarks"><small>Remarks</small><br />{{ b.remarks }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

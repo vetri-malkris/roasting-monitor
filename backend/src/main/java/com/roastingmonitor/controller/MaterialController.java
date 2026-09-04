@@ -1,0 +1,3 @@
+package com.roastingmonitor.controller;
+import com.roastingmonitor.dto.*; import com.roastingmonitor.model.RawMaterial; import com.roastingmonitor.service.RoastingService; import jakarta.validation.Valid; import org.springframework.web.bind.annotation.*; import java.util.List;
+@RestController @RequestMapping("/api/materials") public class MaterialController {private final RoastingService s; public MaterialController(RoastingService s){this.s=s;} @GetMapping public List<RawMaterial> all(){return s.materials();} @PostMapping public RawMaterial add(@Valid @RequestBody MaterialRequest r){return s.addMaterial(r);} }

@@ -1,0 +1,455 @@
+<div class="dashboard-page">
+  <!-- =====================================================
+       SUMMARY
+       ===================================================== -->
+  <div class="card">
+    <div class="card-title">Summary</div>
+
+    <div class="card-subtitle">
+      Totals across all roasting batches — filter by date range.
+    </div>
+
+    <!-- DATE FILTER -->
+    <div class="summary-range-row">
+      <div class="field range-field date-field">
+        <label for="fromDate">From</label>
+
+        <input
+          id="fromDate"
+          type="date"
+          [(ngModel)]="from"
+          [class.empty]="!from"
+        />
+
+        <span class="date-placeholder" *ngIf="!from">
+          DD-MM-YYYY
+        </span>
+      </div>
+
+      <div class="field range-field date-field">
+        <label for="toDate">To</label>
+
+        <input
+          id="toDate"
+          type="date"
+          [(ngModel)]="to"
+          [class.empty]="!to"
+        />
+
+        <span class="date-placeholder" *ngIf="!to">
+          DD-MM-YYYY
+        </span>
+      </div>
+
+      <button
+        type="button"
+        class="btn range-btn"
+        (click)="applyFilter()"
+      >
+        Apply
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-ghost range-btn"
+        (click)="clearFilter()"
+      >
+        Clear
+      </button>
+    </div>
+
+    <!-- SUMMARY STATS -->
+    <div class="summary-stats">
+
+      <!-- BATCHES -->
+      <div class="stat-card stat-batches">
+        <div class="stat-label">Batches</div>
+
+        <div class="stat-batches-count">
+          {{ summary.count }}
+        </div>
+      </div>
+
+      <!-- INPUT -->
+      <div class="stat-card">
+        <div class="stat-label">Input</div>
+
+        <div class="stat-value">
+          <span>
+            {{ summary.i | number: "1.0-2" }} kg
+          </span>
+
+          <span class="stat-divider"> | </span>
+
+          <span>100.0%</span>
+        </div>
+      </div>
+
+      <!-- EXPECTED OUTPUT -->
+      <div class="stat-card">
+        <div class="stat-label">Expected Output</div>
+
+        <div class="stat-value">
+          <span>
+            {{ summary.expectedOutput | number: "1.0-2" }} kg
+          </span>
+
+          <span class="stat-divider"> | </span>
+
+          <span>
+            {{ summary.expectedOutputPct | number: "1.0-1" }}%
+          </span>
+        </div>
+      </div>
+
+      <!-- ACTUAL OUTPUT -->
+      <div class="stat-card">
+        <div class="stat-label">Actual Output</div>
+
+        <div class="stat-value">
+          <span>
+            {{ summary.o | number: "1.0-2" }} kg
+          </span>
+
+          <span class="stat-divider"> | </span>
+
+          <span>
+            {{ summary.y | number: "1.0-1" }}%
+          </span>
+        </div>
+      </div>
+
+      <!-- LOSS -->
+      <div class="stat-card loss">
+        <div class="stat-label">Loss</div>
+
+        <div class="stat-value">
+          <span>
+            {{ summary.loss | number: "1.0-2" }} kg
+          </span>
+
+          <span class="stat-divider"> | </span>
+
+          <span>
+            {{ summary.l | number: "1.0-1" }}%
+          </span>
+        </div>
+      </div>
+
+      <!-- STANDARD LOSS -->
+      <div class="stat-card standard">
+        <div class="stat-label">Standard Loss</div>
+
+        <div class="stat-value">
+          <span>
+            {{ summary.sl | number: "1.0-2" }} kg
+          </span>
+
+          <span class="stat-divider"> | </span>
+
+          <span>
+            {{ summary.standardLossPct | number: "1.0-1" }}%
+          </span>
+        </div>
+      </div>
+
+      <!-- LOSS VARIANCE -->
+      <div
+        class="stat-card variance"
+        [class.good]="summary.v < 0"
+        [class.bad]="summary.v > 0"
+        [class.flat]="summary.v === 0"
+      >
+        <div class="stat-label">Loss Variance</div>
+
+        <!-- BELOW STANDARD -->
+        <div
+          class="stat-value"
+          *ngIf="summary.v < 0"
+        >
+          <span class="trend-arrow">▼</span>
+
+          <span>
+            {{ summary.varianceKg | number: "1.0-2" }} kg
+          </span>
+
+          <span class="stat-divider"> | </span>
+
+          <span>
+            {{ summary.variancePct | number: "1.0-1" }}%
+          </span>
+        </div>
+
+        <!-- ABOVE STANDARD -->
+        <div
+          class="stat-value"
+          *ngIf="summary.v > 0"
+        >
+          <span class="trend-arrow">▲</span>
+
+          <span>
+            {{ summary.varianceKg | number: "1.0-2" }} kg
+          </span>
+
+          <span class="stat-divider"> | </span>
+
+          <span>
+            {{ summary.variancePct | number: "1.0-1" }}%
+          </span>
+        </div>
+
+        <!-- EXACTLY STANDARD -->
+        <div
+          class="stat-value"
+          *ngIf="summary.v === 0"
+        >
+          <span>0.00 kg</span>
+
+          <span class="stat-divider"> | </span>
+
+          <span>0.0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       RAW MATERIALS
+       ===================================================== -->
+  <div class="card">
+    <div class="card-title">Raw Materials</div>
+
+    <div class="card-subtitle">
+      Add materials manually, or import a list from Excel — used
+      to populate the operator's dropdown.
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="material-toolbar">
+      <button
+        type="button"
+        class="btn-small"
+        (click)="toggleAddForm()"
+      >
+        + Add Raw Material
+      </button>
+
+      <button
+        type="button"
+        class="btn-small"
+        (click)="excelInput.click()"
+      >
+        Import from Excel
+      </button>
+
+      <input
+        #excelInput
+        type="file"
+        accept=".xlsx,.xls"
+        class="hidden-file-input"
+        (change)="importExcel($event)"
+      />
+
+      <button
+        type="button"
+        class="btn-small report-btn"
+        (click)="downloadReport()"
+      >
+        Download Report
+      </button>
+    </div>
+
+    <!-- IMPORT ERROR -->
+    <div
+      class="import-error"
+      *ngIf="importError"
+    >
+      {{ importError }}
+    </div>
+
+    <!-- GENERAL ERROR -->
+    <div
+      class="error-text"
+      *ngIf="error"
+    >
+      {{ error }}
+    </div>
+
+    <!-- =================================================
+         ADD MATERIAL FORM
+         ================================================= -->
+    <div
+      class="add-material-form"
+      *ngIf="showAdd"
+    >
+      <div class="form-title">
+        Add Raw Material
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="materialName">
+            Name
+          </label>
+
+          <input
+            id="materialName"
+            type="text"
+            [(ngModel)]="name"
+            placeholder="Arabica Green Coffee Beans"
+          />
+        </div>
+
+        <div class="field">
+          <label for="materialQty">
+            Quantity (kg)
+          </label>
+
+          <input
+            id="materialQty"
+            type="number"
+            [(ngModel)]="qty"
+            min="0"
+            step="0.01"
+            placeholder="200"
+          />
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div class="field">
+          <label for="standardLoss">
+            Standard Loss %
+          </label>
+
+          <input
+            id="standardLoss"
+            type="number"
+            [(ngModel)]="std"
+            min="0"
+            max="100"
+            step="0.1"
+            placeholder="20"
+          />
+        </div>
+
+        <div class="field">
+          <label for="batchNumber">
+            Batch Number
+            <span class="optional-tag">
+              (optional)
+            </span>
+          </label>
+
+          <input
+            id="batchNumber"
+            type="text"
+            [(ngModel)]="batchNumber"
+            placeholder="RB-0001"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="supplier">
+          Supplier
+          <span class="optional-tag">
+            (optional)
+          </span>
+        </label>
+
+        <input
+          id="supplier"
+          type="text"
+          [(ngModel)]="supplier"
+          placeholder="Supplier name"
+        />
+      </div>
+
+      <div
+        class="error-text"
+        *ngIf="error"
+      >
+        {{ error }}
+      </div>
+
+      <div class="edit-actions">
+        <button
+          type="button"
+          class="btn"
+          (click)="add()"
+        >
+          Save Material
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-ghost"
+          (click)="cancelAdd()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+
+    <!-- =================================================
+         MATERIAL TABLE
+         ================================================= -->
+    <div class="material-table-wrap">
+      <table class="material-table">
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Quantity</th>
+            <th>Std. Loss</th>
+            <th>Batch Number</th>
+            <th>Supplier</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let m of materials">
+            <td class="material-name">
+              {{ m.name }}
+            </td>
+
+            <td class="quantity-cell">
+              {{ m.quantity | number: "1.0-2" }} kg
+            </td>
+
+            <td>
+              {{ m.standardLossPct | number: "1.0-1" }}%
+            </td>
+
+            <td>
+              {{ m.batchNumber || "N/A" }}
+            </td>
+
+            <td>
+              {{ m.supplier || "N/A" }}
+            </td>
+          </tr>
+
+          <tr *ngIf="materials.length === 0">
+            <td
+              colspan="5"
+              class="empty-table"
+            >
+              No raw materials available.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<!-- IMPORT TOASTER -->
+  <div
+    class="toast-message"
+    [class.show]="toastVisible"
+    [class.success]="toastType === 'success'"
+    [class.error]="toastType === 'error'"
+  >
+    {{ toastMessage }}
+  </div>
+
+</div>

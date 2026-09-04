@@ -1,0 +1,2 @@
+import {Injectable,signal} from '@angular/core'; import {UserSession} from '../models/models';
+@Injectable({providedIn:'root'}) export class SessionService { readonly user=signal<UserSession|null>(JSON.parse(localStorage.getItem('roasting_user')||'null')); login(u:UserSession){this.user.set(u);localStorage.setItem('roasting_user',JSON.stringify(u));} logout(){this.user.set(null);localStorage.removeItem('roasting_user');} }

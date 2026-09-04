@@ -1,0 +1,769 @@
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+.dashboard-page {
+  width: 100%;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.card {
+  width: 100%;
+  box-sizing: border-box;
+
+  background: #ffffff;
+  border: 1px solid #eadbc8;
+  border-radius: 14px;
+
+  padding: 20px 24px;
+  margin-bottom: 20px;
+
+  box-shadow: 0 2px 5px rgba(80, 50, 20, 0.06);
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #171717;
+  margin-bottom: 4px;
+}
+
+.card-subtitle {
+  font-size: 14px;
+  color: #6b4d35;
+  margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   DATE FILTER
+   ========================================================= */
+
+.date-field {
+  position: relative;
+}
+
+.date-field input {
+  position: relative;
+  z-index: 1;
+}
+
+/*
+   Custom uppercase placeholder.
+   Native date picker remains active because
+   the input is still type="date".
+*/
+.date-placeholder {
+  position: absolute;
+  left: 11px;
+  bottom: 11px;
+
+  color: #999;
+  font-size: 14px;
+
+  pointer-events: none;
+  z-index: 2;
+}
+
+/*
+   Hide Chrome's native date text only when
+   the input is empty and not focused.
+*/
+.date-field input.empty::-webkit-datetime-edit {
+  color: transparent;
+}
+
+/* Show the actual selected date. */
+.date-field input:not(.empty)::-webkit-datetime-edit {
+  color: #171717;
+}
+
+/* Hide the custom placeholder while the date input is focused. */
+.date-field input:focus + .date-placeholder {
+  display: none;
+}
+
+.summary-range-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.range-field {
+  margin-bottom: 0;
+}
+
+
+/* =========================================================
+   FIELDS
+   ========================================================= */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #171717;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  box-sizing: border-box;
+
+  min-height: 40px;
+
+  border: 1px solid #e4d3bd;
+  border-radius: 9px;
+
+  background: #fcf8f2;
+
+  padding: 0 11px;
+
+  font-size: 14px;
+  color: #171717;
+
+  outline: none;
+}
+
+.field textarea {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  min-height: 80px;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: #bd6819;
+  box-shadow: 0 0 0 2px rgba(189, 104, 25, 0.10);
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn {
+  min-height: 40px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #bd6416;
+  color: #ffffff;
+
+  padding: 0 18px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #a95510;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  background: #ffffff;
+  color: #171717;
+  border: 1px solid #e4d3bd;
+}
+
+.btn-ghost:hover {
+  background: #faf4eb;
+}
+
+.range-btn {
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   SUMMARY STATISTICS
+   ========================================================= */
+
+.summary-stats {
+  display: grid;
+
+  grid-template-columns:
+    110px
+    repeat(3, minmax(145px, 1fr));
+
+  grid-auto-rows: minmax(70px, auto);
+
+  gap: 10px;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   STAT CARD
+   ========================================================= */
+
+.stat-card {
+  min-height: 70px;
+
+  border: 1px solid #eadbc8;
+  border-radius: 10px;
+
+  background: #f5ecde;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  padding: 8px 10px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   BATCHES CARD
+   ========================================================= */
+
+.stat-batches {
+  grid-row: span 2;
+
+  min-height: 150px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  background: #f5ecde;
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+
+  color: #4d321e;
+
+  margin-bottom: 7px;
+}
+
+.stat-batches-count {
+  font-size: 32px;
+  line-height: 1;
+
+  font-weight: 700;
+
+  color: #bd6416;
+}
+
+.stat-value {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: #111111;
+
+  white-space: nowrap;
+}
+
+.stat-divider {
+  color: #6b4d35;
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   LOSS CARD
+   ========================================================= */
+
+.stat-card.loss {
+  border-color: #e7a398;
+  background: #fdf3ef;
+}
+
+.stat-card.loss .stat-value {
+  color: #c60000;
+}
+
+
+/* =========================================================
+   STANDARD LOSS
+   ========================================================= */
+
+.stat-card.standard {
+  border-color: #aab8d2;
+  background: #f2f4f8;
+}
+
+.stat-card.standard .stat-value {
+  color: #0049b7;
+}
+
+
+/* =========================================================
+   VARIANCE
+   ========================================================= */
+
+.stat-card.variance.good {
+  background: #e2f4e7;
+  border-color: #8bc7a0;
+}
+
+.stat-card.variance.good .stat-value {
+  color: #078438;
+}
+
+.stat-card.variance.bad {
+  background: #fdf0ee;
+  border-color: #e6a19a;
+}
+
+.stat-card.variance.bad .stat-value {
+  color: #c40000;
+}
+
+.stat-card.variance.flat {
+  background: #f5ecde;
+  border-color: #eadbc8;
+}
+
+.trend-arrow {
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   HIDDEN EXCEL FILE INPUT
+   ========================================================= */
+
+.hidden-file-input {
+  display: none;
+}
+
+
+/* =========================================================
+   RAW MATERIAL TOOLBAR
+   ========================================================= */
+
+.material-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+
+  gap: 8px;
+
+  margin-bottom: 16px;
+}
+
+.material-toolbar > .btn-small {
+  flex: 0 0 auto;
+}
+
+.btn-small {
+  min-height: 40px;
+
+  padding: 0 15px;
+
+  background: #ffffff;
+
+  border: 1px solid #e3cfb5;
+  border-radius: 9px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: #151515;
+
+  cursor: pointer;
+}
+
+.btn-small:hover {
+  background: #faf4eb;
+}
+
+.btn-small:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.report-btn {
+  background: #bd6416;
+  border-color: #bd6416;
+  color: #ffffff;
+}
+
+.report-btn:hover {
+  background: #a95510;
+}
+
+
+/* =========================================================
+   ADD MATERIAL FORM
+   ========================================================= */
+
+.add-material-form {
+  border: 1px solid #eadbc8;
+  border-radius: 10px;
+
+  background: #fcf8f2;
+
+  padding: 16px;
+
+  margin-bottom: 18px;
+}
+
+.row-2 {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+
+  margin-bottom: 12px;
+}
+
+.row-3 {
+  display: grid;
+
+  grid-template-columns:
+    1.4fr
+    1fr
+    1fr;
+
+  gap: 12px;
+
+  margin-bottom: 12px;
+}
+
+.edit-actions {
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 12px;
+}
+
+.optional-tag {
+  color: #8b6d54;
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   MATERIAL TABLE
+   ========================================================= */
+
+.material-table-wrap {
+  width: 100%;
+
+  overflow-x: auto;
+
+  border: 1px solid #e4d4bf;
+  border-radius: 10px;
+}
+
+.material-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  min-width: 700px;
+}
+
+.material-table thead {
+  background: #f4ebdc;
+}
+
+.material-table th {
+  text-align: left;
+
+  padding: 11px 14px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  color: #51351f;
+
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+
+  border-bottom: 1px solid #dfcdb5;
+}
+
+.material-table td {
+  padding: 12px 14px;
+
+  font-size: 13px;
+
+  border-bottom: 1px solid #eadbc8;
+
+  color: #171717;
+}
+
+.material-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.material-name {
+  font-weight: 700;
+}
+
+.quantity-cell {
+  color: #bd6416 !important;
+  font-weight: 700;
+}
+
+.empty-table {
+  text-align: center !important;
+
+  color: #8b735f !important;
+
+  padding: 25px !important;
+}
+
+
+/* =========================================================
+   ERRORS
+   ========================================================= */
+
+.error-text {
+  color: #b00000;
+
+  background: #fff0ee;
+
+  border: 1px solid #e7aaa3;
+  border-radius: 8px;
+
+  padding: 9px 12px;
+
+  margin-bottom: 12px;
+
+  white-space: pre-line;
+
+  font-size: 13px;
+}
+
+.import-error {
+  color: #a00000;
+
+  background: #fff0ee;
+
+  border: 1px solid #e7aaa3;
+  border-radius: 8px;
+
+  padding: 11px 13px;
+
+  margin-bottom: 15px;
+
+  white-space: pre-line;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   TOASTER
+   ========================================================= */
+
+.toast-message {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+
+  max-width: 420px;
+  padding: 13px 18px;
+  border-radius: 10px;
+
+  background: #222222;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(15px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast-message.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.toast-message.success {
+  background: #16803c;
+}
+
+.toast-message.error {
+  background: #c0392b;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-state {
+  text-align: center;
+
+  padding: 25px 15px;
+
+  color: #8a6e56;
+
+  background: #faf5ed;
+
+  border: 1px dashed #dfcbb2;
+
+  border-radius: 9px;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   RESPONSIVE - 1100px
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .summary-stats {
+    grid-template-columns:
+      100px
+      repeat(2, minmax(145px, 1fr));
+
+    grid-auto-rows: minmax(70px, auto);
+  }
+
+  .stat-batches {
+    grid-row: span 3;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 800px
+   ========================================================= */
+
+@media (max-width: 800px) {
+  .card {
+    padding: 18px;
+  }
+
+  .summary-range-row {
+    flex-wrap: wrap;
+  }
+
+  .summary-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stat-batches {
+    grid-row: auto;
+
+    min-height: 70px;
+  }
+
+  .row-2,
+  .row-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - 560px
+   ========================================================= */
+
+@media (max-width: 560px) {
+  .card {
+    padding: 15px;
+    border-radius: 11px;
+  }
+
+  .card-title {
+    font-size: 18px;
+  }
+
+  .card-subtitle {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .summary-range-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .range-field,
+  .range-btn {
+    width: 100%;
+  }
+
+  .summary-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-batches {
+    grid-row: auto;
+    min-height: 70px;
+  }
+
+  .stat-value {
+    font-size: 13px;
+  }
+
+  .stat-batches-count {
+    font-size: 28px;
+  }
+
+  .material-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-small {
+    width: 100%;
+  }
+
+  .toast-message {
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    max-width: none;
+    text-align: center;
+  }
+}

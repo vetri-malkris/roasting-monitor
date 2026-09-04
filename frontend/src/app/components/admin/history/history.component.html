@@ -1,0 +1,94 @@
+<div class="card">
+  <div class="history-title">Roasting History</div>
+  <div class="history-subtitle">Every batch that has been roasted so far.</div>
+  <div class="batch-list">
+    <div class="batch-row-wrap" *ngFor="let b of batches">
+      <button class="batch-row" (click)="toggle(b.id)">
+        <span
+          ><b>{{ b.batchNo }}</b> · {{ b.material }}</span
+        ><span
+          >{{ b.variancePct | number: "1.0-1" }}% vs standard ·
+          {{ b.createdAt | date: "MMM d, h:mm a" }} ▼</span
+        >
+      </button>
+      <div class="batch-detail" *ngIf="expanded.has(b.id)">
+        <div *ngIf="editing !== b.id" class="batch-detail-grid">
+          <div>
+            <small>Quantity In</small>
+            <b>{{ b.inputQty }} kg · 100.0%</b>
+          </div>
+
+          <div>
+            <small>Expected Output</small>
+            <b>
+              {{ b.expectedOutputKg }} kg ·
+              {{ 100 - b.stdLossPct | number: "1.0-1" }}%
+            </b>
+          </div>
+          <div>
+            <small>Actual Output</small
+            ><b>{{ b.outputQty }} kg · {{ b.yieldPct }}%</b>
+          </div>
+          <div>
+            <small>Loss</small><b>{{ b.loss }} kg · {{ b.lossPct }}%</b>
+          </div>
+          <div>
+            <small>Standard Loss</small
+            ><b>{{ b.stdLossKg }} kg · {{ b.stdLossPct }}%</b>
+          </div>
+          <div>
+            <small>Loss Variance</small
+            ><b>{{ b.varianceKg }} kg · {{ b.variancePct }}%</b>
+          </div>
+        </div>
+        <div class="admin-actions" *ngIf="editing !== b.id">
+          <button
+            class="btn-small btn-edit"
+            (click)="$event.stopPropagation(); edit(b)"
+          >
+            Edit</button
+          ><button
+            class="btn-small btn-delete"
+            (click)="$event.stopPropagation(); remove(b)"
+          >
+            Delete
+          </button>
+        </div>
+        <div class="edit-form" *ngIf="editing === b.id">
+          <div class="field">
+            <label>Raw Material</label
+            ><select [(ngModel)]="draft.material">
+              <option *ngFor="let m of materials" [value]="m.name">
+                {{ m.name }}
+              </option>
+            </select>
+          </div>
+          <div class="row-2">
+            <div class="field">
+              <label>Quantity In</label
+              ><input type="number" [(ngModel)]="draft.inputQty" />
+            </div>
+            <div class="field">
+              <label>Quantity Out</label
+              ><input type="number" [(ngModel)]="draft.outputQty" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Remarks</label
+            ><textarea [(ngModel)]="draft.remarks"></textarea>
+          </div>
+          <div class="error-text" *ngIf="error">{{ error }}</div>
+          <div class="edit-actions">
+            <button class="btn" (click)="save(b)">Save Changes</button
+            ><button class="btn btn-ghost" (click)="editing = null">
+              Cancel
+            </button>
+          </div>
+        </div>
+        <p *ngIf="editing !== b.id && b.remarks">
+          <small>Remarks</small><br />{{ b.remarks }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
