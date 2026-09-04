@@ -29,7 +29,7 @@ public class SecurityConfig {
 
     c.setAllowedOrigins(List.of(
             "http://localhost:4200",
-            "https://6a9abea8629e523179a7268e--fastidious-rabanadas-18b7be.netlify.app/"
+            "https://fastidious-rabanadas-18b7be.netlify.app"
     ));
 
     c.setAllowedMethods(List.of(
