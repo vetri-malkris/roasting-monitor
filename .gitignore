@@ -1,0 +1,21 @@
+# Node / Angular
+node_modules/
+dist/
+.angular/
+
+# Java / Maven
+target/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Env files
+.env
+.env.local
